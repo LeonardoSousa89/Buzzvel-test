@@ -1,0 +1,7 @@
+dialog { width: min(34rem, calc(100% - 40px)); margin: auto; background: white; color: var(--color-ink); border: 1px solid var(--line); border-radius: 16px; padding: clamp(20px, 5vw, 36px); }
+
+dialog h2 { font-size: 30px; margin-bottom: 16px; }
+
+dialog p { margin-bottom: 16px; }
+
+dialog::backdrop { background: #171b2c88; }

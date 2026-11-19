@@ -1,0 +1,102 @@
+.contact-description {
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: clamp(16px, 1.4vw, 20px);
+  line-height: 1.55;
+}
+
+.contact-cards { display: grid; gap: 16px; margin-top: 44px; }
+
+.contact-card {
+  position: relative;
+  padding: 22px 18px 22px 84px;
+  background: var(--cream);
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+.contact-card dt { font-family: var(--font-sans); font-weight: 600; }
+
+.contact-card dd { margin-top: 5px; color: var(--muted); overflow-wrap: anywhere; }
+
+.contact-card a { color: var(--color-brand); }
+
+.contact-card a:hover { text-decoration: underline; }
+
+.contact-icon {
+  position: absolute;
+  left: 21px;
+  top: 50%;
+  translate: 0 -50%;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--blue-light);
+  color: var(--color-brand);
+}
+
+.contact-icon svg { width: 25px; height: 25px; }
+
+.contact-form {
+  min-width: 0;
+  padding: clamp(20px, 3.1vw, 44px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px #171b2c0a;
+}
+
+.contact-form-body { display: grid; gap: 23px; }
+
+.contact-instructions { color: var(--muted); font-size: 15px; line-height: 1.6; margin-top: 10px; margin-bottom: 8px; }
+
+.contact-field { display: grid; gap: 8px; }
+
+.contact-field label { font-size: 15px; font-weight: 700; }
+
+.contact-field input, .contact-field textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 54px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--color-ink);
+  background: var(--cream);
+  font-size: 15px;
+}
+
+.contact-field textarea { min-height: 135px; resize: vertical; }
+
+.contact-field input::placeholder, .contact-field textarea::placeholder { color: var(--subtle); opacity: 1; }
+
+.contact-field [aria-invalid="true"] { border-color: #a4262c; }
+
+.contact-error { color: #a4262c; font-size: 13px; }
+
+.contact-status { color: #176047; font-weight: 600; }
+
+.contact-status:empty { margin-top: -23px; }
+
+.contact-form .button { min-height: 58px; }
+
+@media (max-width: 767px) {
+  .contact-description { margin-top: 16px; line-height: 1.5; }
+  .contact-cards { margin-top: 32px; gap: 16px; }
+  .contact-card { padding: 17px 14px 17px 72px; font-size: 14px; }
+  .contact-icon { left: 16px; width: 40px; height: 40px; }
+  .contact-icon svg { width: 22px; height: 22px; }
+  .contact-form { padding: 20px; }
+  .contact-form-body { gap: 22px; }
+  .contact-instructions { font-size: 14px; }
+  .contact-field label { font-size: 14px; }
+  .contact-field input, .contact-field textarea { min-height: 48px; font-size: 14px; padding: 12px 16px; }
+  .contact-field textarea { min-height: 100px; }
+  .contact-form .button { min-height: 50px; }
+  .contact-status:empty { margin-top: -22px; }
+}
+
+@media (min-width: 768px) {
+  .contact-card dt { font-weight: 400; }
+}

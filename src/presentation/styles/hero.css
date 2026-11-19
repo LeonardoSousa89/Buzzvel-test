@@ -1,0 +1,53 @@
+@reference "../../app/globals.css";
+
+.hero { padding-block: clamp(72px, 7.8vw, 128px); overflow: clip; }
+
+.hero-description { color: var(--muted); font-size: clamp(16px, 1.47vw, 22px); line-height: 1.5; max-width: 36ch; margin-block: 25px 32px; }
+
+.trust { @apply flex items-center; gap: 12px; margin-top: 36px; font-size: 14px; color: var(--muted); }
+
+.trust strong { color: var(--color-ink); }
+
+.hero-visual { position: relative; isolation: isolate; }
+
+.hero-visual::before, .hero-visual::after { content: ""; position: absolute; z-index: -1; }
+
+.hero-visual::before { inset: 5% -7.5% 5% 6%; background: var(--orange); border-radius: 18px; }
+
+.hero-visual::after { width: 25%; aspect-ratio: 1; left: -9%; bottom: 2%; background: var(--blue-light); border-radius: 50%; }
+
+.hero-photo { position: relative; width: 100%; aspect-ratio: .96; overflow: hidden; border-radius: 29px; }
+
+.badge { @apply flex items-center; position: absolute; gap: 9px; padding: 12px 15px; background: white; border-radius: 11px; box-shadow: 0 6px 22px #171b2c15; white-space: nowrap; font-size: clamp(10px, 1vw, 14px); font-weight: 600; }
+
+.course-count { left: -4.5%; top: 3%; }
+
+.rating { right: -11%; bottom: 7%; }
+
+.rating .rating-stars { color: #e7b934; letter-spacing: .09em; }
+
+@media (max-width: 767px) {
+  .hero { padding-block: 60px; }
+  .hero-visual { grid-row: 1; margin-inline: 8px; max-width: 440px; width: calc(100% - 16px); justify-self: center; }
+  .hero-photo { aspect-ratio: 346 / 380; border-radius: 19px; }
+  .hero-visual::before { right: -5.5%; border-radius: 12px; }
+  .hero-visual::after { left: -5%; }
+  .badge { font-size: 10px; padding: 9px 10px; border-radius: 8px; }
+  .course-count { left: -2%; }
+  .rating { right: -6%; }
+  .hero-description { max-width: none; margin-block: 20px 30px; }
+  .trust { justify-content: center; margin-top: 28px; font-size: 12px; }
+}
+
+@media (min-width: 1024px) {
+  .hero-description { max-width: 43ch; }
+}
+
+@media (max-width: 767px) {
+  .hero { padding-bottom: 84px; }
+  .hero .rating { bottom: 11%; }
+}
+
+@media (min-width: 768px) {
+  .rating .rating-stars { color: var(--yellow); }
+}
