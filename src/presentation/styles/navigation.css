@@ -1,0 +1,33 @@
+@reference "../../app/globals.css";
+
+.site-header { border-bottom: 1px solid #e9e9ed; position: relative; z-index: 3; }
+
+.header-row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 76px; gap: 18px; }
+
+.wordmark { justify-self: start; font-size: 25px; font-weight: 800; letter-spacing: -.09em; }
+
+.wordmark span { color: var(--color-brand); }
+
+.desktop-navigation, .header-actions { @apply flex items-center; gap: clamp(14px, 2.1vw, 32px); font-size: 14px; }
+
+.header-actions { justify-self: end; }
+
+.mobile-menu { display: none; }
+
+@media (max-width: 1023px) {
+  .desktop-navigation, .header-actions { gap: 15px; }
+  .header-actions .button { padding-inline: 13px; }
+}
+
+@media (max-width: 767px) {
+  .header-row { display: flex; justify-content: space-between; min-height: 70px; }
+  .desktop-navigation, .header-actions { display: none; }
+  .mobile-menu { display: block; }
+  .menu-toggle { min-width: 44px; min-height: 44px; font-size: 21px; }
+  .mobile-menu nav { position: absolute; right: 20px; left: 20px; top: calc(100% + 5px); border: 1px solid var(--line); background: white; border-radius: 9px; padding: 8px; box-shadow: 0 6px 20px #171b2c20; }
+  .mobile-menu nav a { display: block; padding: 12px; }
+}
+
+@media (min-width: 768px) {
+  .site-header .wordmark span { color: inherit; }
+}
