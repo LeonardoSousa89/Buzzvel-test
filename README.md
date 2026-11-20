@@ -95,13 +95,8 @@ I chose a unidirectional flow inspired by Flux to organize interactions, typed a
 
 I implemented this with React's `useReducer`, rather than a separate Flux dispatcher or global store. The form and menu each own their state. Discriminated action unions make their permitted actions explicit: `ContactAction` uses `edited`, `validationFailed`, and `submissionConfirmed`; `MenuAction` uses `toggled` and `closed`.
 
-The reducer relationship is:
 
-$$
-S_{t+1} = R(S_t, A_t)
-$$
 
-Here, the current state $S_t$ and action $A_t$ determine the next state through the reducer $R$. In Luma, this describes local form and menu transitions, not the source of the page content.
 
 ### Form flow
 
@@ -173,24 +168,6 @@ The application modules also depend on domain value contracts. This demonstrates
 
 I do not claim a concrete Liskov substitution example in this code. There is no implemented base/subtype behavior or pair of interchangeable implementations whose behavioral substitution can be verified. Compatible prop shapes establish structural typing; that alone does not prove behavioral substitutability.
 
-## Patterns I chose
-
-| Choice | Classification | Why I used it here |
-| --- | --- | --- |
-| Layered architecture | Architecture | Keep composition, contracts, rules, fixtures, and UI responsibilities identifiable. |
-| Flux-inspired unidirectional flow | State organization | Connect local interaction, explicit actions, reducer transitions, and rendering. |
-| Reducer | State transition pattern | Concentrate form and menu transitions in predictable functions with typed actions. |
-| Custom Hooks | React logic organization | Encapsulate form coordination and integration with the viewport API. |
-| Component composition | Composition pattern | Assemble sections in `Home` and reuse modal behavior through `DetailsDialog.children`. |
-| Shared avatar module | Data organization practice | Maintain one ordered source of avatar paths for the hero and final call to action. |
-
-I chose reducers to avoid distributing the same transition across several setters. `contactReducer` creates new objects, removes only the edited field's error from a copied error object, and returns a reset state on confirmation. The menu reducer calculates a boolean without DOM effects.
-
-I extracted `useContactForm` to keep coordination together without moving DOM focus into the application layer. I extracted `useMobileViewport` to keep `matchMedia` subscription, cleanup, and server snapshot behavior in one place, using `useSyncExternalStore`.
-
-I used composition both at the page level and at the dialog boundary. This lets each section remain responsible for its own markup while the shared dialog owns its opening and closing mechanism.
-
-I centralized avatar paths in `src/infrastructure/local/learner-avatars.ts`. The hero module selects the first three entries with `slice(0, 3)`, while the final CTA uses the complete four-entry array. The shared source preserves ordering while allowing those distinct presentations.
 
 ## Clean Code and readability
 
@@ -372,11 +349,12 @@ All files below contain global CSS selectors rather than TypeScript functions or
 
 ## Run locally
 
-I use npm with the committed `package-lock.json`. The locked Next.js package declares **Node.js 20.9.0 or newer**. The verification environment used **Node.js v20.15.0** and **npm 10.9.9**; the project does not declare a separate Node version pin.
+I install the dependencies declared in `package.json` with `npm i`. I keep `package.json` in the repository. The Next.js dependency declares **Node.js 20.9.0 or newer**. The verification environment used **Node.js v20.15.0** and **npm 10.9.9**; the project does not declare a separate Node version pin.
 
 From the project root:
 
 ```bash
+npm i
 npm run dev
 ```
 
@@ -401,30 +379,6 @@ No application environment variables or backend services are required by the cur
 
 The `test` script is currently a placeholder that prints `Error: no test specified` and exits with status 1. I do not present it as an automated test suite.
 
-## Verification and current limits
-
-I checked the documentation against the current source and package scripts. The source checks below were run in an isolated copy so generated build files did not alter the reference project.
-
-| Check | Observed result |
-| --- | --- |
-| `npm run lint` | Passed. |
-| `npm run typecheck` | Passed. |
-| `npm run build` | Passed; Next.js compiled the application and prerendered `/` and `/_not-found`. |
-| Source reference | All 55 files under `src` are covered; relative source links resolve against the project root. |
-| README structure and formulas | Markdown parsed locally, all seven details blocks are balanced, and the four mathematical expressions rendered with KaTeX. |
-
-I could not complete a browser-based visual review in this environment. The Mermaid blocks use GitHub-compatible flowchart syntax, but their final visual layout and GitHub's native Markdown/math rendering remain unverified.
-
-I retain these visible content and scope limits in the current implementation:
-
-- Contact confirmation is simulated, and submitted messages are neither sent nor stored.
-- Login, careers, journal, terms, and privacy controls open local informational dialogs with the scope described above.
-- The hero rating differs by viewport: `4.8` on mobile and `4.9` on desktop. The testimonial role also differs by viewport.
-- The three desktop learning steps currently all display `Step 01`; mobile numbering displays steps 01, 02, and 03.
-- The community description contains placeholder prose, and the metrics/counts remain fixture content.
-- The form body's Portuguese/English selection follows viewport width, with English as its server snapshot.
-
-I have not included a development-duration claim because the current source does not establish a verified duration.
 
 ## AI agent development
 
