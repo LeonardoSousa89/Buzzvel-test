@@ -34,7 +34,7 @@ Content comes from TypeScript modules in `src/infrastructure/local`. Category ca
 | Contact email | Uses `mailto:contact@luma.com`, delegating to the visitor's email application. |
 | Final actions | Explore all courses → `#courses`; Join Luma → `#contact`. |
 | Footer Explore group | Courses → `#featured`; Categories → `#courses`; Instructors and For Teams → `#community`. |
-| Footer Company group | About → `#how-it-works`; Careers and Journal open availability dialogs. |
+| Footer Company group | About → `#how-it-works`; Careers opens an availability dialog; Journal is unavailable and does not open a dialog. |
 | Footer Support group | Help Center and Contact → `#contact`; Terms and Privacy open informational dialogs. |
 
 I kept these destinations within the implemented page. Course playback, enrollment, account authentication, journal pages, career listings, and full legal documents are outside the current implementation.
@@ -57,7 +57,7 @@ I chose a layered architecture to establish a clear separation of responsibiliti
 | Domain | [`src/domain`](src/domain) | Define feature-specific content and value contracts without React or browser dependencies. |
 | Application | [`src/application`](src/application) | Derive category cards, validate contact values, and calculate form and menu transitions. |
 | Local infrastructure | [`src/infrastructure/local`](src/infrastructure/local) | Supply typed content fixtures and local image paths. |
-| Presentation | [`src/presentation`](src/presentation) | Render sections, handle DOM interaction, coordinate local state through hooks, and define feature styles. |
+| Presentation | [`src/presentation`](src/presentation) | Render sections, handle DOM interaction, coordinate local state through hooks, and apply Tailwind utility classes and shared global styles. |
 
 ### Home as the composition point
 
@@ -65,7 +65,7 @@ I separated concrete content selection from section rendering in `Home`, exporte
 
 For example, `Hero` receives `content: HeroContent`; `Featured` receives `course: Course`; `Categories` receives `cards: readonly CategoryCard[]` and `content: CategoriesContent`. These presentation modules do not import their concrete fixtures. `ContactForm` and its hook consume application operations, while domain types describe their values and content.
 
-`RootLayout` supplies the document shell and imports the font and style resources. I kept those document concerns separate from the page's section composition.
+`RootLayout` supplies the document shell and imports the fonts and `globals.css`. I kept those document concerns separate from the page's section composition.
 
 The arrows below mean **source import dependencies**, from the importing layer to the imported layer. Some are type-only imports; this is not a runtime request or event sequence.
 
@@ -179,7 +179,7 @@ I do not claim a concrete Liskov substitution example in this code. There is no 
 | Explicit state actions | `edited`, `validationFailed`, `submissionConfirmed`, `toggled`, `closed` | Make the reason for each transition traceable. |
 | Content grouped by feature | Local catalog, contact, navigation, and other content modules | Locate copy and fixture changes without searching through section markup. |
 | Shared data and behavior | `learnerAvatars` and `DetailsDialog` | Reduce duplicated paths and modal handling. |
-| Global and feature styles separated | `globals.css`, layout/primitives, and section styles | Locate shared visual rules and feature-specific overrides. These are global CSS files, not isolated CSS Modules. |
+| Tailwind and shared global styles | Tailwind utility classes in components and `src/app/globals.css` | Keep component styling near its markup while centralizing theme tokens and shared base rules. |
 | State near its consumer | Form state in `useContactForm`; menu state in `MobileMenu` | Avoid introducing a global store for interactions used by one feature. |
 
 I use these choices to improve reading, maintenance, and the ability to verify behavior. I have not measured a runtime performance gain from file organization, SOLID, or reducers.
@@ -194,7 +194,7 @@ I used `next/image`, explicit dimensions or `fill` with `sizes`, a preloaded her
 
 ## Source reference
 
-I grouped every file under `src` below by its actual responsibility. Paths are relative to the project root. The tables distinguish executable functions from contracts, content, and styles.
+I grouped every file under `src` below by its actual responsibility. Paths are relative to the project root. The tables distinguish executable functions from contracts, content, and global styles.
 
 <details>
 <summary><strong>Composition and global styles — 3 files</strong></summary>
@@ -202,8 +202,8 @@ I grouped every file under `src` below by its actual responsibility. Paths are r
 | File | Exports or relevant functions | Responsibility | Consumer | Applicable choice |
 | --- | --- | --- | --- | --- |
 | [`src/app/page.tsx`](src/app/page.tsx) | Default `Home`; module-level `categoryCards` | Build category cards once at module evaluation, compose the header, main sections, footer, and skip link, and pass typed content into sections. | Next.js App Router | Composition point; layered architecture; concrete dependency assembly. |
-| [`src/app/layout.tsx`](src/app/layout.tsx) | `metadata`; default `RootLayout` | Define the page title/description, import both variable fonts and all styles, and render `html lang="en"`, `body`, and `children: ReactNode`. | Next.js App Router | Document composition; separation from page content. |
-| [`src/app/globals.css`](src/app/globals.css) | No functions or TypeScript exports | Import Tailwind; define theme tokens, color variables, typography, shell/section spacing, buttons, avatars, focus and skip-link rules, and global responsive adjustments. | `RootLayout`; referenced by feature styles using Tailwind directives | Shared styling organization. |
+| [`src/app/layout.tsx`](src/app/layout.tsx) | `metadata`; default `RootLayout` | Define the page title/description, import both variable fonts and `globals.css`, and render `html lang="en"`, `body`, and `children: ReactNode`. | Next.js App Router | Document composition; separation from page content. |
+| [`src/app/globals.css`](src/app/globals.css) | No functions or TypeScript exports | Import Tailwind; define theme tokens, color variables, base typography, and global focus rules. | `RootLayout`; Tailwind utilities used in presentation components | Shared styling organization. |
 
 </details>
 
@@ -323,29 +323,7 @@ I keep the `map` callbacks in these sections for rendering collections: navigati
 
 </details>
 
-<details>
-<summary><strong>Presentation styles — 14 files</strong></summary>
 
-All files below contain global CSS selectors rather than TypeScript functions or exports. `RootLayout` imports each one; the corresponding components use their selectors. I separated these files for navigation and maintenance, without claiming CSS scope isolation.
-
-| File | Relevant selectors or rules | Responsibility | Styled consumers | Applicable choice |
-| --- | --- | --- | --- | --- |
-| [`src/presentation/styles/primitives.css`](src/presentation/styles/primitives.css) | `.course-count strong`, `.category-number` | Share the blue count/number badge treatment. | `Hero`, `Categories` | Shared visual primitives. |
-| [`src/presentation/styles/layout.css`](src/presentation/styles/layout.css) | `.hero-grid`, `.category-grid`, `.featured-grid`, `.community-grid`, `.testimonial-grid`, `.contact-grid`, `.footer-grid` | Define multi-column layouts, section relationships, responsive stacking, and selected spacing overrides. | Page sections and footer | Shared layout organization. |
-| [`src/presentation/styles/navigation.css`](src/presentation/styles/navigation.css) | Header, wordmark, navigation, menu toggle, mobile navigation; `@reference` | Style the desktop header and mobile navigation, hiding desktop controls at the mobile breakpoint. | `Header`, `MobileMenu`, footer wordmark | Feature styles with a shared wordmark selector. |
-| [`src/presentation/styles/hero.css`](src/presentation/styles/hero.css) | Hero copy, trust row, photo, shapes, count/rating badges; `@reference` | Define hero composition, image treatment, and responsive typography/spacing/badges. | `Hero` | Feature style organization. |
-| [`src/presentation/styles/categories.css`](src/presentation/styles/categories.css) | `.section-intro`, `.category`, `.category-number`, `.category-link` | Style category cards, numbering, copy, actions, and breakpoint spacing. | `Categories`; shared section intro markup | Feature style organization. |
-| [`src/presentation/styles/featured.css`](src/presentation/styles/featured.css) | `.featured`, `.featured-visual`, `.featured-description`, `.byline`, `.course-metadata` | Define the blue featured section, image badge, metadata chips, and responsive actions. | `Featured` | Feature style organization. |
-| [`src/presentation/styles/learning.css`](src/presentation/styles/learning.css) | `.steps-heading`, `.steps`, `.step-icon`, `.step-number` | Style step layout, connector, decorative color variants, numbering, and responsive spacing. | `HowItWorks` | Feature style organization. |
-| [`src/presentation/styles/viewport.css`](src/presentation/styles/viewport.css) | `.viewport-mobile`, `.viewport-desktop`, caption variants | Switch display variants at 768px, including explicit caption rules. | `Hero`, `HowItWorks`, `Testimonial`, `Contact` | Shared responsive display rules; separate from the JavaScript viewport hook. |
-| [`src/presentation/styles/testimonial.css`](src/presentation/styles/testimonial.css) | Quote marks, `blockquote`, `figcaption`, `.metrics`; `@reference` | Style quotation, caption, portrait, and responsive metric arrangement. | `Testimonial` | Feature style organization; global element selectors. |
-| [`src/presentation/styles/community.css`](src/presentation/styles/community.css) | `.community-description`, `.collage`, `.collage-column`, `.tile`, image-specific tile variants | Define the decorative collage grid, circular background, image crops, and responsive positioning. | `Community` | Feature style organization. |
-| [`src/presentation/styles/contact.css`](src/presentation/styles/contact.css) | Contact cards/icons, `.contact-form`, fields, errors, status | Style contact information, form controls, invalid borders, confirmation, and mobile adjustments. | `Contact`, `ContactForm` | Feature style organization. |
-| [`src/presentation/styles/final-cta.css`](src/presentation/styles/final-cta.css) | `.final-cta`, avatar/action rules, `.cta-shapes`, decorative shape variants | Define the final section's color, typography, actions, and desktop decoration; hide shapes on mobile. | `FinalCta` | Feature style organization. |
-| [`src/presentation/styles/footer.css`](src/presentation/styles/footer.css) | `.site-footer`, `.footer-brand`, `.footer-navigation`, `.footer-copyright` | Define footer colors, columns, link rhythm, copyright separator, and responsive spacing. | `Footer` | Feature style organization. |
-| [`src/presentation/styles/dialog.css`](src/presentation/styles/dialog.css) | `dialog`, `dialog h2`, `dialog p`, `dialog::backdrop` | Define the shared modal dimensions, surface, content spacing, and backdrop. | `DetailsDialog` and its composed content | Shared behavior presentation. |
-
-</details>
 
 ## Run locally
 
@@ -383,6 +361,10 @@ The `test` script is currently a placeholder that prints `Error: no test specifi
 ## AI agent development
 
 I used ChatGPT as a development assistant under my direction. I designed and implemented the prompts, defined the scope of each task, and controlled each file created by the agent. I coordinated the process and retained responsibility for the architectural decisions and final implementation.
+
+I reviewed the generated output against the project structure, typed contracts, component responsibilities, local content, and documented interaction flows. I also checked the README against the supplied source archive, including the Tailwind migration and the unavailable Journal action. This is a source-level review; it does not establish that browser interactions, animations, accessibility, or automated checks passed in the final artifact.
+
+**Development time:** The project was developed in approximately **20 hours**, including planning, UI implementation, responsive adjustments, architectural organization, code review, and final refinements.
 
 ---
 
