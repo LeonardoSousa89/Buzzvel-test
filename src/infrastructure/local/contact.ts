@@ -20,7 +20,7 @@ export const contact: ContactContent = {
       },
       submit: 'Send message',
       errors: { required: 'Please complete this field.', 'invalid-email': 'Enter a valid email address.' },
-      success: 'Message sent in this demo.',
+      success: 'Message sent',
     },
     pt: {
       instructions: 'Preencha os campos e entraremos em contato.',
@@ -31,7 +31,7 @@ export const contact: ContactContent = {
       },
       submit: 'Enviar mensagem',
       errors: { required: 'Preencha este campo.', 'invalid-email': 'Informe um e-mail válido.' },
-      success: 'Envio simulado com sucesso.',
+      success: 'Message sent',
     },
   },
 };

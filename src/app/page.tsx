@@ -1,3 +1,4 @@
+import { ScrollAnimations } from '../presentation/animation/ScrollAnimations';
 import { Contact } from '../presentation/sections/Contact';
 import { FinalCta } from '../presentation/sections/FinalCta';
 import { Footer } from '../presentation/sections/Footer';
@@ -24,9 +25,10 @@ const categoryCards = buildCategoryCards(categories, course);
 export default function Home() {
   return (
     <>
-      <a className="skip-link" href="#main">Skip to content</a>
+      <a className="skip-link absolute z-10 top-[8px] left-[8px] p-[12px] bg-white not-focus:[clip-path:inset(50%)]" href="#main">Skip to content</a>
       <Header links={navigation} startLearning={startLearning} login={login} />
       <main id="main">
+        <ScrollAnimations />
         <Hero content={hero} />
         <Categories cards={categoryCards} content={categoriesContent} />
         <Featured course={course} />

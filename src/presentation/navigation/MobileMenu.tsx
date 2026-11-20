@@ -25,14 +25,14 @@ export function MobileMenu({ links, startLearning }: MobileMenuProps) {
   }
 
   return (
-    <div className="mobile-menu" onKeyDown={handleKeyDown}>
-      <button ref={toggle} className="menu-toggle" type="button" aria-label={open ? 'Close menu' : 'Open menu'}
+    <div className="mobile-menu hidden [@media(max-width:767px)]:block" onKeyDown={handleKeyDown}>
+      <button ref={toggle} className="menu-toggle [@media(max-width:767px)]:min-w-[44px] [@media(max-width:767px)]:min-h-[44px] [@media(max-width:767px)]:text-[21px]" type="button" aria-label={open ? 'Close menu' : 'Open menu'}
         aria-expanded={open} aria-controls="mobile-navigation" onClick={() => dispatch({ type: 'toggled' })}>
         <span aria-hidden="true">{open ? '×' : '☰'}</span>
       </button>
-      <nav id="mobile-navigation" aria-label="Mobile navigation" hidden={!open}>
-        {links.map(({ label, href }) => <a key={label} href={href} onClick={closeMenu}>{label}</a>)}
-        <a href={startLearning.href} onClick={closeMenu}>{startLearning.label}</a>
+      <nav className="[@media(max-width:767px)]:absolute [@media(max-width:767px)]:right-[20px] [@media(max-width:767px)]:left-[20px] [@media(max-width:767px)]:[top:calc(100%_+_5px)] [@media(max-width:767px)]:[border:1px_solid_var(--line)] [@media(max-width:767px)]:bg-white [@media(max-width:767px)]:rounded-[9px] [@media(max-width:767px)]:p-[8px] [@media(max-width:767px)]:[box-shadow:0_6px_20px_#171b2c20]" id="mobile-navigation" aria-label="Mobile navigation" hidden={!open}>
+        {links.map(({ label, href }) => <a className="[&:hover]:underline [@media(max-width:767px)]:block [@media(max-width:767px)]:p-[12px]" key={label} href={href} onClick={closeMenu}>{label}</a>)}
+        <a className="[&:hover]:underline [@media(max-width:767px)]:block [@media(max-width:767px)]:p-[12px]" href={startLearning.href} onClick={closeMenu}>{startLearning.label}</a>
       </nav>
     </div>
   );

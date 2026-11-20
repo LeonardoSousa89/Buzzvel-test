@@ -10,14 +10,14 @@ export const steps: readonly Step[] = [
   },
   {
     mobileNumber: { prefix: 'Step 0', value: 2 },
-    desktopNumber: 'Step 01',
+    desktopNumber: 'Step 02',
     title: 'Learn from experience',
     description: 'Follow concise lessons created by professionals who use these skills.',
     color: 'orange',
   },
   {
     mobileNumber: { prefix: 'Step 0', value: 3 },
-    desktopNumber: 'Step 01',
+    desktopNumber: 'Step 03',
     title: 'Put it into practice',
     description: 'Every course includes practical exercises designed to turn knowledge into action.',
     color: 'yellow',

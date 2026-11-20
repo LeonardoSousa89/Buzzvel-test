@@ -11,7 +11,7 @@ export const testimonial: TestimonialContent = {
 };
 
 export const metrics: readonly Metric[] = [
-  { value: '24K+', label: 'active learners' },
-  { value: '120+', label: 'expert-led courses' },
-  { value: '92%', label: 'complete their first course' },
+  { value: '24K+', label: 'active learners', animation: { target: 24000, divisor: 1000, suffix: 'K+' } },
+  { value: '120+', label: 'expert-led courses', animation: { target: 120, divisor: 1, suffix: '+' } },
+  { value: '92%', label: 'complete their first course', animation: { target: 92, divisor: 1, suffix: '%' } },
 ];

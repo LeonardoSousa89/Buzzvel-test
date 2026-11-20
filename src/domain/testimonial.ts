@@ -1,4 +1,8 @@
-export type Metric = { value: string; label: string };
+export type Metric = {
+  value: string;
+  label: string;
+  animation?: { target: number; divisor: number; suffix: string };
+};
 
 export type TestimonialContent = {
   quote: string;

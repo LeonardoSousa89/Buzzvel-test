@@ -18,7 +18,7 @@ export const footer: FooterContent = {
       links: [
         { label: 'About', href: '#how-it-works' },
         { label: 'Careers', detail: 'Career listings are unavailable in this demo.' },
-        { label: 'Journal', detail: 'Journal articles are unavailable in this demo.' },
+        { label: 'Journal', unavailable: true },
       ],
     },
     {
@@ -26,8 +26,8 @@ export const footer: FooterContent = {
       links: [
         { label: 'Help Center', href: '#contact' },
         { label: 'Contact', href: '#contact' },
-        { label: 'Terms', detail: 'Terms are unavailable in this demo.' },
-        { label: 'Privacy', detail: 'This demo does not send or store contact form submissions.' },
+        { label: 'Terms', detail: 'Luma provides learning content for personal use. Course materials may not be copied, redistributed or resold without permission. Please use the website respectfully and contact us with any questions.' },
+        { label: 'Privacy', detail: 'Contact form entries remain in your browser while you complete the form. Submitting clears the fields and displays a confirmation; no message is transmitted or stored by this form.' },
       ],
     },
   ],
