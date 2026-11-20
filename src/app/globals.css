@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #171b2c;
+  --color-brand: #3157f6;
+  --font-sans: "Inter Variable", Arial, sans-serif;
+  --font-display: "Plus Jakarta Sans Variable", Arial, sans-serif;
+}
+
+:root {
+  --cream: #f9f8f3;
+  --muted: #656770;
+  --subtle: #6d7384;
+  --line: #dbdfeb;
+  --blue-light: #e2e8ff;
+  --orange: #ffcb9f;
+  --yellow: #ffee7e;
+}
+
+@layer base {
+  body { background: white; color: var(--color-ink); font-family: var(--font-sans); }
+  :focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
+  button { cursor: pointer; }
+}
